@@ -1,1 +1,20 @@
-Hello World
+{% extends "layout.html" %}
+
+{% block body %}
+	<div class='container'>
+		<div class="jumbotron">
+		  <h1 class="display-3">Monte Cristo!</h1>
+		  <p class="lead">Connect with fellow readers..</p>
+		  <hr class="my-4">
+		  <p>Review books and more!</p>
+		  <p class="lead">
+		    <a class="btn btn-primary btn-lg" href="login" role="button" >Login</a>
+			<p>New here?</p>
+			<a class="btn btn-primary btn-lg" href="signup" role="button">Sign Up</a>
+		  </p>
+		</div>
+	</div>
+
+	<script src='bootstrap/Scripts/jquery-3.3.1.min.js'></script>
+	<script src='bootstrap/Scripts/bootstrap.min.js'></script>
+{% endblock %}
