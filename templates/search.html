@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+	<div class="container">
+		<h1>Search Result</h1>
+			<ul>
+				{% for book in result %}
+				<li>
+					<a href="{{url_for('book_details', num=book.id)}}" >{{book.title}}
+				</li>
+				{% endfor %}
+			</ul>
+			<!-- {{result.title}} -->
+	</div>
+
+{% endblock %}

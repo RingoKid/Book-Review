@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block body %}
+		<div class='container'>
+		<form action="{{ url_for('home') }}" method="post">
+		  <fieldset>
+		    <legend>Sign In</legend>
+			<div class="form-group">
+		      <label for="exampleTextarea">Name</label>
+		      <textarea class="form-control" id="name" rows="1" placeholder="Name"></textarea>
+		    </div>
+			<div class="form-group">
+				<label for="exampleTextarea">Username</label>
+				<textarea class="form-control" name="username" rows="1" placeholder="Username"></textarea>
+			</div>
+		    <div class="form-group">
+		      <label for="exampleInputEmail1">Email address</label>
+		      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+		    </div>
+		    <div class="form-group">
+		      <label for="exampleInputPassword1">Password</label>
+		      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+		    </div>
+
+		    <button type="submit" class="btn btn-primary">Sign Up</button>
+		  </fieldset>
+		  </div>
+		</form>
+
+{% endblock %}

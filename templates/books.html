@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+	<div class='container'>
+
+		<h1>Books</h1>
+
+		<ul>
+			{% for book in books %}
+				<li>
+					<a href="{{url_for('book_details', num=book.id)}}" >{{book.title}}
+				</li>
+			{% endfor %}
+		</ul>
+		<div>
+			<ul class="pagination">
+				{% block content %}
+				{% if activate==1 %}
+					<li class="page-item disabled">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+				{% endblock content %}
+					<a class="page-link" href="{{url_for('book_pages', page=activate-1)}}">&laquo;</a>
+				</li>
+				{% if activate==p[0] %}
+				    <li class="page-item active">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+					<a class="page-link" href="{{url_for('book_pages', page = p[0])}}">{{p[0]}}</a>
+			    </li>
+				{% if activate==p[1] %}
+					<li class="page-item active">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+					<a class="page-link" href="{{url_for('book_pages', page = p[1])}}">{{p[1]}}</a>
+				</li>
+				{% if activate==p[2] %}
+					<li class="page-item active">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+					<a class="page-link" href="{{url_for('book_pages', page = p[2])}}">{{p[2]}}</a>
+				</li>
+				{% if activate==p[3] %}
+					<li class="page-item active">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+
+					<a class="page-link" href="{{url_for('book_pages', page = p[3])}}">{{p[3]}}</a>
+				</li>
+				{% if activate==p[4] %}
+					<li class="page-item active">
+				{% else %}
+					<li class="page-item">
+				{% endif %}
+
+					<a class="page-link" href="{{url_for('book_pages', page = p[4])}}">{{p[4]}}</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="{{url_for('book_pages', page=activate+1)}}">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+{% endblock %}
