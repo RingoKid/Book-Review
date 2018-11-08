@@ -81,6 +81,7 @@ def book_details(num):
     KEY  = "rzRtpIoujeKZ5rD5q8qA"
     read = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": KEY, "isbns": isbn})
     read = read.json()
+    print(read)
     read['books'][0]['percent_rating'] = (float(read['books'][0]['average_rating'])/5)*100
 
     return render_template("book_details.html", books=book, res=res, read=read)
@@ -102,8 +103,20 @@ def book_pages(page):
 def about():
     return render_template("about.html")
 
+def isyear(num):
+    try:
+        int(num)
+        return True
+    except ValueError:
+        return False
+
 @app.route("/search", methods=['POST'])
 def search():
     book = request.form.get("note")
-    result = db.execute("SELECT * FROM books WHERE title LIKE '%{}%'".format(book))
+    # result.append(db.execute("SELECT * FROM books WHERE title LIKE '%{}%'".format(book.title())))
+
+    if len(str(book))==4 and isyear(book):
+        result = db.execute("SELECT * FROM books WHERE year = {} LIMIT 15".format(int(book)))
+    else:
+        result = (db.execute("SELECT * FROM books WHERE title LIKE '%{}%' UNION SELECT * FROM books WHERE author LIKE '%{}%' UNION SELECT * FROM books WHERE isbn = '{}' LIMIT 15".format(book.title(), book.title(), book)))
     return render_template("search.html", result=result)

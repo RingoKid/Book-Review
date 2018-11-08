@@ -1,14 +1,32 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<style>
+	ul {
+		columns : 2;
+		-webkit-columns : 2;
+		-moz-columns : 2;
+		list-style-type : none;
+		text-decoration: none;
+
+	}
+	li{
+		margin : 10px 0;
+	}
+	a:hover, a:visited, a:link, a:active
+	{
+	    text-decoration: none;
+	}
+</style>
 
 	<div class='container'>
 
 		<h1>Books</h1>
 
-		<ul>
+		<ul class="columns" data-columns="2">
 			{% for book in books %}
 				<li>
+					<img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-S.jpg">
 					<a href="{{url_for('book_details', num=book.id)}}" >{{book.title}}
 				</li>
 			{% endfor %}

@@ -10,7 +10,7 @@
 		.div2{
 			float : right;
 			width : 335px;
-		    height: 250px;
+		    height: 280px;
 			margin-right : 8%;
 		}
 		.div3{
@@ -24,37 +24,69 @@
 	</style>
 	<div class="container">
 	<div class='div1 container'>
-		<!-- <div class='jumbotron'>
-			<h1>{{books.title}}</h1>
-			<h2>{{books.author}}</h2>
-			<h3>{{books.year}}</h3>
-			<p>{{res['items'][0]['volumeInfo']['description']}}</p>
-		</div> -->
 		<div class="card mb-3">
-	  <h3 class="card-header">{{books.title}}</h3>
-	  <div class="card-body">
-	    <h5 class="card-title">{{books.author}}</h5>
-	    <h6 class="card-subtitle text-muted">{{books.year}}</h6>
-	  </div>
-	  <div class="container">
-	  <img  src="{{res['items'][0]['volumeInfo']['imageLinks']['thumbnail']}}" alt="Card image">
-		<div class="div2">
-	  <p class="b card-text">{{res['items'][0]['volumeInfo']['description']}}</p>
+			<h3 class="card-header">{{books.title}}</h3>
+		<div class="card-body">
+			<h5 class="card-title">{{books.author}}</h5>
+			<h6 class="card-subtitle text-primary">{{books.year}}</h6>
 		</div>
-		</div>
+		<div class="container">
+			{% if res['totalItems'] == 1 %}
 
-		<!-- <div class="container"> -->
-		  <!-- <div class="container" >
-		    <p class="card-text">{{res['items'][0]['volumeInfo']['description']}}</p> -->
-		  <!-- </div> -->
-	  <!-- </div> -->
-	  <ul class="list-group list-group-flush">
-	    <li class="list-group-item">Publisher : {{res['items'][0]['volumeInfo']['publisher']}}</li>
-		<li class="list-group-item">Category : {{res['items'][0]['volumeInfo']['categories'][0]}}</li>
-	    <li class="list-group-item">Number of pages : {{res['items'][0]['volumeInfo']['pageCount']}}</li>
-	  </ul>
-	  <div class="card-footer text-muted">
-	  </div>
+			<img height="280" width="180" src="{{res['items'][0]['volumeInfo']['imageLinks']['thumbnail']}}">
+
+			<div class="div2">
+				<p class="b card-text">{{res['items'][0]['volumeInfo']['description']}}</p>
+			</div>
+			{% else %}
+
+			<img  src="http://covers.openlibrary.org/b/isbn/{{books.isbn}}-M.jpg" alt="Card image">
+
+			{% endif %}
+		</div>
+		<!-- {% if res['totalItems'] == 1 %}
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">Publisher : {{res['items'][0]['volumeInfo']['publisher']}}</li>
+			<li class="list-group-item">Category : {{res['items'][0]['volumeInfo']['categories'][0]}}</li>
+			<li class="list-group-item">Number of pages : {{res['items'][0]['volumeInfo']['pageCount']}}</li>
+		</ul>
+		{% endif %} -->
+		<ul style="margin-top:10px;" class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link active" data-toggle="tab" href="#home">Category</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#profile">Publisher</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#page">Pages</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="tab" href="#review">Reviews</a>
+		  </li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+		  <div class="tab-pane fade show active" id="home">
+				<h5 style="margin-left:10px;">{{res['items'][0]['volumeInfo']['categories'][0]}}</h5>
+		  </div>
+		  <div class="tab-pane fade" id="profile">
+				<h5 style="margin-left:10px;">{{res['items'][0]['volumeInfo']['publisher']}}</h5>
+		  </div>
+		  <div class="tab-pane fade" id="page">
+				<h5 style="margin-left:10px;">{{res['items'][0]['volumeInfo']['pageCount']}}</h5>
+		  </div>
+		  <div class="tab-pane fade" id="review">
+			  <div class="card border-primary mb-3" ">
+			    <div class="card-header">Header</div>
+			    <div class="card-body">
+			      <h4 class="card-title">Primary card title</h4>
+			      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			    </div>
+			  </div>
+		 	</div>
+		</div>
+		<div class="card-footer text-muted">
+	</div>
 	</div>
 	</div>
 
@@ -75,7 +107,7 @@
 	    </div>
 		<br>
 		<h1 class="mb-1">{{read['books'][0]['average_rating']}}/5.0</h1>
-		<small>The color changes based on rating.</small>
+		<small>GoodReads Rating.</small>
 		{% if read['books'][0]['percent_rating'] > 80 %}
 		<div class="progress">
 		  <div class="progress-bar bg-success" role="progressbar" style="width: {{read['books'][0]['percent_rating']}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
