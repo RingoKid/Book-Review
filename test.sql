@@ -1,1 +1,1 @@
-SELECT * FROM books WHERE title LIKE '2012';
+SELECT * FROM users;

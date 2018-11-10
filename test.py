@@ -1,18 +1,28 @@
-import requests
+# import requests
+import bcrypt
+
+# def main():
+#     KEY = 'rzRtpIoujeKZ5rD5q8qA'
+#     # KEY = 'AIzaSyDmB9osByi9XPXMNnxAdIppaFdaq2mQAik'
+#     req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": KEY, "isbns":"0380795272"})
+#     # req = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:1416949658")
 #
-def main():
-    KEY = 'rzRtpIoujeKZ5rD5q8qA'
-    # KEY = 'AIzaSyDmB9osByi9XPXMNnxAdIppaFdaq2mQAik'
-    req = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": KEY, "isbns":"0380795272"})
-    # req = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:1416949658")
+#     if req.status_code != 200:
+#         raise Exception("ERROR: API request unsuccessful.")
+#
+#     res = req.json()
+#     # print(res["books"][0]['isbn'])
+#     print(res)
+#     # print(res['items'][0]['volumeInfo']['description'])
+#
+# if __name__=="__main__":
+#     main()
 
-    if req.status_code != 200:
-        raise Exception("ERROR: API request unsuccessful.")
+password = "hellokitty"
 
-    res = req.json()
-    # print(res["books"][0]['isbn'])
-    print(res)
-    # print(res['items'][0]['volumeInfo']['description'])
-
-if __name__=="__main__":
-    main()
+hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+# hash = bcrypt.generate_password_hash("plaintext_password")
+# if bcrypt.checkpw(password, hash):
+print(hash.decode())
+# else:
+#     print("Nay!")

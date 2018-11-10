@@ -1,5 +1,6 @@
 import os
 import requests
+import bcrypt
 
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
@@ -25,36 +26,52 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template("index.html")
 
-@app.route("/login", methods=['POST','GET'])
+@app.route("/login", methods=['POST'])
 def login():
-    # if request.method == 'POST':
-    # username = request.form['username']
-        # password = request.form.get('password')
-        #
-        # error = None
-        #
-        # if not username:
-        #     error = 'Username is required.'
-        # elif not password:
-        #     error = 'Password is required.'
-        # else:
-    # name = db.execute('SELECT COUNT(*) FROM books WHERE year = ?', (username,))
-    # print(username)
-    # return redirect(url_for('index'))
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
 
-    return render_template('login.html')
+    error = None
+    if not username:
+        error = "Username is required."
+    elif not password:
+        error = "Password is required."
 
-@app.route("/signup", methods=['POST', 'GET'])
+    name = db.execute("SELECT password FROM users WHERE username = '{}';".format(username)).fetchone()
+
+    if name['password']:
+        print(name['password'])
+
+
+    return render_template('index.html', error=error)
+
+@app.route("/signup", methods=['POST'])
 def signup():
 
-    # if request.method == 'POST':
-    #     username = request.form.get('username')
-    #     password = request.form.get('password')
+    error = None
+    if request.method == 'POST':
+        name = request.form.get('name')
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+    pword = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+
+    check_name = db.execute("SELECT COUNT(*) FROM users WHERE username='{}'".format(username)).fetchone()
+
+    if check_name[0] != 0:
+        error = "{} taken.".format(username)
+
+    if error == None:
+        db.execute("INSERT INTO users (name, username, email, password) VALUES ('{}', '{}', '{}', '{}');".format(name, username, email, pword.decode()))
+        db.commit()
+
     return render_template("signup.html")
 
 @app.route("/home", methods=["POST"])
 def home():
-    return render_template("home.html", username=username)
+    return render_template("home.html", username=username, error=error)
 
 
 @app.route("/books")

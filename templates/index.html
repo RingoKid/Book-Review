@@ -1,20 +1,69 @@
 {% extends "layout.html" %}
 
 {% block body %}
+	<div class="container">
+	<div style="float:left;" >
+		<h1 class="display-3">Monte Cristo!</h1>
+		<p class="lead">Connect with fellow readers..</p>
+	</div>
+	<br>
+	<br>
+	<br>
+	<div style="float:right " class="alert alert-dismissible alert-danger">
+		<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+		<p class="alert-link">Username taken</p>
+	</div>
+	</div>
 	<div class='container'>
-		<div class="jumbotron">
-		  <h1 class="display-3">Monte Cristo!</h1>
-		  <p class="lead">Connect with fellow readers..</p>
-		  <hr class="my-4">
-		  <p>Review books and more!</p>
-		  <p class="lead">
-		    <a class="btn btn-primary btn-lg" href="login" role="button" >Login</a>
-			<p>New here?</p>
-			<a class="btn btn-primary btn-lg" href="signup" role="button">Sign Up</a>
-		  
+		<!-- <h1 class="display-3">Monte Cristo!</h1>
+		<p class="lead">Connect with fellow readers..</p> -->
+		<div class='container'>
+		</div>
+		  <div style="height:50%; width:45%; float:left" class="jumbotron">
+		  <form action="{{url_for('login')}}" method="post">
+	  	  <fieldset>
+	  	    <legend>Login</legend>
+	  	    <div class="form-group">
+	  	      <label class="form-control-label" for="InputUsername">Username</label>
+	  	      <input type="text" class="form-control" name="username" placeholder="Username">
+	  	    </div>
+	  	    <div class="form-group">
+	  	      <label for="exampleInputPassword1">Password</label>
+	  	      <input type="password" class="form-control" name="password" placeholder="Password">
+	  	    </div>
+	  	    <fieldset>
+	  	    <button type="submit" class="btn btn-primary">Login</button>
+	  	  </fieldset>
+	    	</form>
+		</div>
+
+		  <div style="height:50%; width:45%; float:right" class="jumbotron">
+			  <form action="{{url_for('signup')}}" method="post">
+	  		  <fieldset>
+	  		    <legend>Sign Up</legend>
+	  			<div class="form-group">
+	  		      <label for="exampleTextarea">Name</label>
+	  		      <input class="form-control" name="name" rows="1" placeholder="Name"></input>
+	  		    </div>
+	  			<div class="form-group">
+	  				<label for="exampleTextarea">Username</label>
+	  				<input class="form-control" name="username" rows="1" placeholder="Username"></input>
+	  			</div>
+	  		    <div class="form-group">
+	  		      <label for="exampleInputEmail1">Email address</label>
+	  		      <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+	  		    </div>
+	  		    <div class="form-group">
+	  		      <label for="exampleInputPassword1">Password</label>
+	  		      <input type="password" class="form-control" name="password" placeholder="Password">
+	  		    </div>
+
+	  		    <button type="submit" class="btn btn-primary">Sign Up</button>
+	  		  </fieldset>
+			  </form>
+	  		  </div>
+
 		</div>
 	</div>
 
-	<script src='bootstrap/Scripts/jquery-3.3.1.min.js'></script>
-	<script src='bootstrap/Scripts/bootstrap.min.js'></script>
 {% endblock %}
