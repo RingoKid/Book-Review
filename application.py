@@ -1,13 +1,18 @@
 import os
 import requests
-import bcrypt
 
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+from flask_bcrypt import Bcrypt
+
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
+from flask_bcrypt import generate_password_hash, check_password_hash
+
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
@@ -21,32 +26,41 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-
 @app.route("/")
 def index():
+    # print(session.get('username') is not None)
+    if session.get('username') is not None:
+        return render_template("about.html")
+
     return render_template("index.html")
 
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=['POST','GET'])
 def login():
+    error = None
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-    error = None
-    if not username:
-        error = "Username is required."
-    elif not password:
-        error = "Password is required."
+        name = db.execute("SELECT password FROM users WHERE username = '{}';".format(username)).fetchone()
+        # print(generate_password_hash(password, 10))
+        pword = check_password_hash(name[0], password)
 
-    name = db.execute("SELECT password FROM users WHERE username = '{}';".format(username)).fetchone()
+        if name==None:
+            return render_template('index.html', error=3) #3 = User not found.
 
-    if name['password']:
-        print(name['password'])
+        if pword == False:
+            return render_template('index.html', error=4) #4 = Password didn't match
 
+        session['username'] = username
 
-    return render_template('index.html', error=error)
+    return render_template('login.html', error=error)
 
-@app.route("/signup", methods=['POST'])
+@app.route("/logout")
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
+@app.route("/signup", methods=['POST','GET'])
 def signup():
 
     error = None
@@ -54,25 +68,28 @@ def signup():
         name = request.form.get('name')
         username = request.form.get('username')
         email = request.form.get('email')
-        password = request.form.get('password')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
 
-    pword = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        if password1 != password2:
+            return render_template("index.html",error=1) #1 = Password didn't match.
 
-    check_name = db.execute("SELECT COUNT(*) FROM users WHERE username='{}'".format(username)).fetchone()
+        pword = generate_password_hash(password1, 10).decode('utf-8')
 
-    if check_name[0] != 0:
-        error = "{} taken.".format(username)
+        check_name = db.execute("SELECT COUNT(*) FROM users WHERE username='{}'".format(username)).fetchone()
 
-    if error == None:
-        db.execute("INSERT INTO users (name, username, email, password) VALUES ('{}', '{}', '{}', '{}');".format(name, username, email, pword.decode()))
-        db.commit()
+        if check_name[0] != 0:
+            return render_template("index.html", error=2) #2 = Username taken
 
-    return render_template("signup.html")
+        if error == None:
+            db.execute("INSERT INTO users (name, username, email, password) VALUES ('{}', '{}', '{}', '{}');".format(name, username, email, pword.decode()))
+            db.commit()
+
+    return render_template("signup.html", error=error)
 
 @app.route("/home", methods=["POST"])
 def home():
     return render_template("home.html", username=username, error=error)
-
 
 @app.route("/books")
 def books():
@@ -87,6 +104,7 @@ def book_details(num):
     #Database
     book = db.execute("SELECT * FROM books WHERE id = :id",{"id": num}).fetchone()
     isbn = book['isbn']
+
     #Google API
     req = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:{}".format(isbn))
 
@@ -98,7 +116,6 @@ def book_details(num):
     KEY  = "rzRtpIoujeKZ5rD5q8qA"
     read = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": KEY, "isbns": isbn})
     read = read.json()
-    print(read)
     read['books'][0]['percent_rating'] = (float(read['books'][0]['average_rating'])/5)*100
 
     return render_template("book_details.html", books=book, res=res, read=read)

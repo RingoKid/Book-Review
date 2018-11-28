@@ -1,30 +1,52 @@
 {% extends "layout.html" %}
 
 {% block body %}
-		<div class='container'>
-		<form action="{{ url_for('home') }}" method="post">
-		  <fieldset>
-		    <legend>Sign In</legend>
-			<div class="form-group">
-		      <label for="exampleTextarea">Name</label>
-		      <textarea class="form-control" id="name" rows="1" placeholder="Name"></textarea>
-		    </div>
-			<div class="form-group">
-				<label for="exampleTextarea">Username</label>
-				<textarea class="form-control" name="username" rows="1" placeholder="Username"></textarea>
-			</div>
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Email address</label>
-		      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-		    </div>
-		    <div class="form-group">
-		      <label for="exampleInputPassword1">Password</label>
-		      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-		    </div>
+<div style="width:45%;" class="container">
+	<form action="{{url_for('signup')}}" method="post">
+	<fieldset>
+	  <legend>Sign Up</legend>
+	  <div class="form-group">
+		<label for="exampleTextarea">Name</label>
+		<input class="form-control" name="name" rows="1" placeholder="Name"></input>
+	  </div>
 
-		    <button type="submit" class="btn btn-primary">Sign Up</button>
-		  </fieldset>
-		  </div>
-		</form>
+	  {% if error==2 %}
+	  <div class="form-group">
+		  <label>Username</label>
+		  <input class="form-control is-invalid" name="username" rows="1" placeholder="Username"></input>
+		  <div class="invalid-feedback">Username taken.</div>
+	  </div>
+	  {% else %}
+	  <div class="form-group">
+		  <label for="exampleTextarea">Username</label>
+		  <input class="form-control" name="username" rows="1" placeholder="Username"></input>
+	  </div>
+	  {% endif %}
+	  <div class="form-group">
+		<label for="exampleInputEmail1">Email address</label>
+		<input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+	  </div>
+	  <div class="form-group">
+		<label for="exampleInputPassword1">Password</label>
+		<input type="password" class="form-control" name="password1" placeholder="Password">
+	  </div>
+
+	  {% if error==1 %}
+	  <div class="form-group" >
+		  <label>Retype Password</label>
+		  <input type="password" name="password2" class="form-control is-invalid" placeholder="Password">
+		  <div class="invalid-feedback">Password didn't match.</div>
+	  </div>
+	  {% else %}
+	  <div class="form-group">
+		<label>Retype Password</label>
+		<input type="password" class="form-control" name="password2" placeholder="Password">
+	  </div>
+	  {% endif %}
+
+	  <button type="submit" class="btn btn-primary">Sign Up</button>
+	</fieldset>
+	</form>
+	</div>
 
 {% endblock %}

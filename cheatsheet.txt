@@ -1,0 +1,1 @@
+psql -h ec2-54-235-66-24.compute-1.amazonaws.com -d d1mfljplo0ga1a -U ophdgappovqkfd -p 5432 -a -w -f .sql

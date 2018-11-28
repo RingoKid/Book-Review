@@ -1,5 +1,5 @@
 # import requests
-import bcrypt
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 # def main():
 #     KEY = 'rzRtpIoujeKZ5rD5q8qA'
@@ -18,11 +18,14 @@ import bcrypt
 # if __name__=="__main__":
 #     main()
 
-password = "hellokitty"
-
-hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-# hash = bcrypt.generate_password_hash("plaintext_password")
-# if bcrypt.checkpw(password, hash):
-print(hash.decode())
+password = "ringo"
+# pword = "$2b$12$pAv3HWPxERFIpYhEnFPI2eEPu4UnYBWCFFonkPSXwa0GzJt59Zhzy"
+#
+hash = "$2b$12$15ebAeKna8klP5kYe42myuSPzW1BSFpeOBCc238tD5CT4lWCG/RyC"
+# hash = generate_password_hash(password, 10).decode('utf-8')
+check = check_password_hash(hash, password)
+print(check)
+# # if bcrypt.checkpw(pword.encode(), hash):
+# print(hash.decode())
 # else:
 #     print("Nay!")
